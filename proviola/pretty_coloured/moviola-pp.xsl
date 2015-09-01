@@ -91,11 +91,11 @@
     function getPlain(id) {
       return plains[id];
     };
- 
+
     function getObligation(id) {
       return obligations[id];
     };
-  
+
     function setResponse(plain, obligation) {
 
       goalSpans =  document.getElementById("goal").getElementsByTagName("span");
@@ -116,7 +116,7 @@
           <xsl:value-of select="@frameNumber"/>
         )
         </xsl:attribute>
-        
+
         <xsl:for-each select="command-pp/part">
           <span>
           <xsl:attribute name="class">
@@ -125,7 +125,7 @@
           <xsl:value-of select="."/>
           </span>
         </xsl:for-each>
-          
+
       </span>
     </xsl:for-each>
     </pre>

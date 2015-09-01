@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Proof Camera.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -36,12 +36,12 @@ def setupParser():
 
 
   parser = ArgumentParser(description = usage)
-  parser.add_argument("-u", "--user", 
+  parser.add_argument("-u", "--user",
                     action="store", dest="user",
                     default="nobody",
                     help="Username for ProofWeb (default: %(default)s)")
 
-  parser.add_argument("-g", "--group", 
+  parser.add_argument("-g", "--group",
                     action="store", dest="group",
                     default="nogroup",
                     help="Groupname for ProofWeb user (default: %(default)s)")
@@ -50,53 +50,53 @@ def setupParser():
                     action="store", dest="pswd",
                     default="anon",
                     help="Password for user")
-  
-  parser.add_argument("--coqtop", 
+
+  parser.add_argument("--coqtop",
                       action = "store", dest = "coqtop",
                       default=None,
                       help = "Location of coqtop executable."
                       )
-  
+
   parser.add_argument("--timeout", "-t",
                       action = "store", dest = "timeout",
                       type = float, default = 1,
-                      help = """How long to wait for responses by coqtop. 
+                      help = """How long to wait for responses by coqtop.
                       (In seconds, floating point).
                       """)
-    
+
   parser.add_argument("--service-url",
                     action="store", dest="service",
                     default=None,
                     help="URL for web service to talk to prover")
-  
+
   parser.add_argument("--prover",
                     action="store", dest="prover",
                     default="coq",
                     help="Prover to use (default: %(default)s).")
-  
+
   parser.add_argument("--stylesheet",
                     action="store", dest="stylesheet",
                     default="proviola.xsl",
                     help="URI at which the XSL stylesheet can be found\
                       (default: %(default)s)")
-  
-  parser.add_argument("script", action="store", 
+
+  parser.add_argument("script", action="store",
                       help="Script from which to make a movie")
 
   parser.add_argument("movie", action="store", nargs="?", default=None,
                       help="Movie file in which to store the constructed movie")
-                    
+
   return parser
 
 def main(argv = None):
-  """ Main method: 
-      - sets up logging information, 
+  """ Main method:
+      - sets up logging information,
       - parses the command line (optionally provided as a list),
       - creates a film out of the given script.
       - Writes the film to disk.
 
       Arguments:
-      - Argv: Arguments passed to the options parser. 
+      - Argv: Arguments passed to the options parser.
   """
 
   logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
@@ -105,24 +105,24 @@ def main(argv = None):
   options = parser.parse_args(argv)
 
   proofScript = options.script
-  
+
   logging.debug("Processing: %s"%proofScript)
 
-  movie = make_film(filename=proofScript, 
+  movie = make_film(filename=proofScript,
                     coqtop = options.coqtop,
-                    pwurl = options.service, 
+                    pwurl = options.service,
                     group = options.group)
 
   if options.movie:
     filmName = options.movie
   else:
-    filmName = splitext(proofScript)[0] + ".flm" 
+    filmName = splitext(proofScript)[0] + ".flm"
 
   directory = os.path.dirname(filmName)
 
   if len(directory) > 0 and not os.path.exists(directory):
     os.makedirs(directory)
-  
+
   movie.toFile(filmName, options.stylesheet)
 
 def make_film(filename, pwurl = None, group = "nogroup",
@@ -136,17 +136,17 @@ def make_film(filename, pwurl = None, group = "nogroup",
     Keyword arguments:
     - pwurl: The URL to the server generating proof states.
     - group: The group used to log in.
-  """ 
+  """
 
-  extension = splitext(filename)[1] 
+  extension = splitext(filename)[1]
   reader = get_reader(extension = extension)
   reader.add_code(open(filename, 'r').read())
-  
-  
+
+
   prover = get_prover(path = coqtop, url = pwurl, group = group)
 
   return reader.make_frames(prover = prover)
-  
+
 
 if __name__ == "__main__":
   sys.exit(main())

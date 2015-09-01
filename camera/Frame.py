@@ -12,7 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Proof Camera.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -29,7 +29,7 @@ class Frame:
   """ A class for frames """
 
   def __init__(self, id = -1, command = None, response = None):
-    """ A frame always has an id and a command, but optionally a response 
+    """ A frame always has an id and a command, but optionally a response
     """
     self._id = id
     self._command = command
@@ -49,14 +49,14 @@ class Frame:
 
   def getId(self):
     return self._id
- 
+
   def fromxml(self, elem):
     """ Fill frame from given elem. """
     self._id = elem["framenumber"]
-    
+
     if elem.command and elem.command.string:
       self._command = unescape(elem.command.string)
-    
+
     if elem.response and elem.response.string:
       self._response = unescape(elem.response.string)
 
@@ -67,22 +67,22 @@ class Frame:
                                             self.getCommand()))
 
     if self._response:
-      frameElement.append(self.createTextElement(doc, TAG_RES, 
+      frameElement.append(self.createTextElement(doc, TAG_RES,
                                             self.getResponse()))
-    
-    return frameElement 
 
-  
+    return frameElement
+
+
   def createTextElement(self, doc, elementName, contents):
     """ Convenience method for creating text-containing nodes in doc """
     contents = contents or ""
     element = Tag(doc, elementName)
     element.append(escape(contents))
-    return element 
+    return element
 
   def get_reference(self,document):
     """ A Frame is referred to by its identifier. """
-    
+
     ref = Tag(document, "frame-reference")
     ref[TAG_ID] = self.getId()
     return ref

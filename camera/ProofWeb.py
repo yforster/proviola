@@ -12,7 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Proof Camera.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -23,7 +23,7 @@
 
 import urllib
 import urllib2
-import string 
+import string
 import sys
 import logging
 from time import sleep
@@ -31,7 +31,7 @@ from time import sleep
 from ResultHandler import ResultHandler
 
 class ProofWeb(object):
-  def __init__(self, url, group = "nogroup", user = "nobody", 
+  def __init__(self, url, group = "nogroup", user = "nobody",
                           pswd = "anon", prover="coq"):
     self.url = url
     self.session = -1
@@ -50,15 +50,15 @@ class ProofWeb(object):
       })
 
     handler = ResultHandler()
-    
+
     try:
       prover = urllib2.urlopen(self.url, loginInfo)
       data = prover.read()
       prover.close()
-    
+
       # Parse the HTML, to get the variable assignments in the JavaScript
       handler.feed(data)
-    
+
       #TODO Breaks if session is not found in the web page
       self.session = string.strip(handler.assignments['session'], '\"')
     except urllib2.HTTPError:
@@ -70,7 +70,7 @@ class ProofWeb(object):
      Returns the empty string if an error was encountered.
   """
   def strip_decoration(self, result):
-    
+
     if result != "":
       status = result[0]
 
@@ -90,25 +90,25 @@ class ProofWeb(object):
     else:
       return ""
 
-  
+
   def send(self, command):
-    """ Send the given command to the prover, and give the goal returned by 
+    """ Send the given command to the prover, and give the goal returned by
         ProofWeb.
-    """  
+    """
     sleep(.5)
 
     cmdarg = "%d__PWT__%s__PWT__%d"
     begin = self.pos
     end = self.pos + len(command)
     cmdarg = cmdarg%(begin, command, end)
-    
+
     commandInfo = urllib.urlencode( \
       { "command"      : "addtobuf", \
         "callnr"       : self.callnr, \
         "s"            : self.session, \
         "cmdarguments" : cmdarg \
       })
-    
+
     try:
       prover = urllib2.urlopen(self.url, commandInfo)
     except urllib2.HTTPError:

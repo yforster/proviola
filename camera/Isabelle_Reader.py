@@ -21,7 +21,7 @@ class Isabelle_Reader(Reader):
     time.sleep(10)
     tree = parseString("<document>" + isabelle_session.document_as_xml() +
                        "</document>")
-    
+
     for node in tree.documentElement.childNodes:
       if node.nodeType != Node.TEXT_NODE and node.tagName == "state":
         document.addFrame(self.state_to_frame(node))
@@ -64,7 +64,7 @@ class Isabelle_Reader(Reader):
       return None
 
     return result
-      
+
   def filter_non_spans(self, node):
     """ Recursively filter out the non-spans below the current node.
     """
@@ -73,7 +73,7 @@ class Isabelle_Reader(Reader):
         data = child
 
         to_remove = []
-        
+
         for child in data.childNodes:
           if child.tagName == "span":
             self.filter_non_spans(child)
@@ -82,8 +82,8 @@ class Isabelle_Reader(Reader):
 
         for candidate in to_remove:
           data.removeChild(candidate)
-        
-        # Only good nodes are left now, so gather these nodes to live with 
+
+        # Only good nodes are left now, so gather these nodes to live with
         # their grandparent
         for child in data.childNodes:
           node.insertBefore(child, data)

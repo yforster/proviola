@@ -1,29 +1,29 @@
 import unittest
 from tempfile import NamedTemporaryFile
-from mock import Mock, patch 
+from mock import Mock, patch
 from camera import camera
 
 _mock_get_prover = Mock()
- 
+
 class TestCamera(unittest.TestCase):
   """ Test cases for the camera script and utilities. """
-  
+
   def setUp(self):
     """ Create a parser. """
     self._parser = camera.setupParser()
 
   def test_parser_local(self):
     """ Test asking for a local Coq. """
-    result = self._parser.parse_args(["--coqtop=foo", "--timeout=5", 
+    result = self._parser.parse_args(["--coqtop=foo", "--timeout=5",
                                       "script.v"])
     self.assertEquals(result.coqtop, "foo")
     self.assertEquals(result.timeout, 5)
-    
+
   def test_parser_short(self):
     """ Test that the command line parser is set up correctly. """
     self.assertTrue(self._parser.description)
-    
-    # Test short arguments 
+
+    # Test short arguments
     results_short = self._parser.parse_args(
         ["-ucarst",
          "-t5",
@@ -48,10 +48,10 @@ class TestCamera(unittest.TestCase):
          "--password=hackzor",
          "--service-url=http://proofweb.cs.ru.nl",
          "--prover=isabelle",
-         "--stylesheet=new.xsl", 
+         "--stylesheet=new.xsl",
          "script.v",
          "movie.xml"])
-    
+
     self.assertEquals(results_long.user,       "carst")
     self.assertEquals(results_long.group,      "mathwiki")
     self.assertEquals(results_long.pswd,       "hackzor")
@@ -59,7 +59,7 @@ class TestCamera(unittest.TestCase):
     self.assertEquals(results_long.prover,     "isabelle")
     self.assertEquals(results_long.stylesheet, "new.xsl")
     self.assertEquals(results_long.movie, "movie.xml")
-      
+
   def test_parse_help(self):
     """ Test requesting help. """
     try:
@@ -78,21 +78,21 @@ class TestCamera(unittest.TestCase):
     f = NamedTemporaryFile(suffix = ".v")
     camera.make_film(f.name, coqtop = "/usr/bin/coqtop")
     f.close()
-    
+
     self.assertTrue("/usr/bin/coqtop" in _mock_get_prover.call_args[1].values(),
                     "Specified path not used.")
-  @patch('camera.camera.get_prover', _mock_get_prover)  
+  @patch('camera.camera.get_prover', _mock_get_prover)
   def test_use_specified_proofweb(self):
     """ Use the prover (ProofWeb) specified in make_film. """
     f = NamedTemporaryFile(suffix = ".v")
-    camera.make_film(f.name, 
+    camera.make_film(f.name,
                      pwurl = "http://prover.example.com")
     f.close()
-    
+
     self.assertTrue("http://prover.example.com" in
                      _mock_get_prover.call_args[1].values(),
                     "Specified path not used.")
-    
+
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(TestCamera)
   unittest.TextTestRunner(verbosity=2).run(suite)

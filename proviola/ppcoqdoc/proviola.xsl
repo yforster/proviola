@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0"  
+<xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
@@ -8,7 +8,7 @@
     <head>
       <link href="coqdoc.css" type="text/css" rel="stylesheet" />
       <link href="proviola.css" type="text/css" rel="stylesheet" />
-      
+
       <script type = "text/javascript">
         var responses = new Array();
 
@@ -25,8 +25,8 @@
             <xsl:variable name="data">
               <xsl:call-template name="replace">
                 <xsl:with-param name="string">
-                  <xsl:value-of 
-                    select="translate(response, '&#x0A;', '&#x09;') "/> 
+                  <xsl:value-of
+                    select="translate(response, '&#x0A;', '&#x09;') "/>
                 </xsl:with-param>
                 <xsl:with-param name="from">&quot;</xsl:with-param>
                 <xsl:with-param name="to">\"</xsl:with-param>
@@ -38,7 +38,7 @@
             responses[i]=data;
           </xsl:for-each>
         };
-        
+
         function get_response(id) {
           return responses[id];
         };
@@ -46,7 +46,7 @@
         function set_response(response, scene) {
           goalId = "goal"+scene;
           elById = document.getElementById(goalId);
-          if(elById){ 
+          if(elById){
             goalSpan = elById.getElementsByTagName("span")[0];
             goalSpan.innerHTML = response.replace(/&#x09;/g , '\n');
           }
@@ -65,7 +65,7 @@
 <xsl:template match="frame">
   <xsl:param name="sceneRef"/>
   <xsl:param name="scene-type"/>
- 
+
   <xsl:choose>
   <xsl:when test="$scene-type = 'doc'">
     <xsl:copy-of select = "command-coqdoc/node()"/>
@@ -116,14 +116,14 @@
 
         <xsl:otherwise>
           <xsl:value-of select="$sceneRef"/>_<xsl:value-of select="@scenenumber" />
-        </xsl:otherwise> 
+        </xsl:otherwise>
         </xsl:choose>
        </xsl:with-param>
        <xsl:with-param name="scene-type">
         <xsl:value-of select="@class"/>
        </xsl:with-param>
      </xsl:apply-templates>
-  </div> 
+  </div>
 
   <xsl:if test="@class='code'">
     <xsl:variable name="goalId">
@@ -131,7 +131,7 @@
         <xsl:when test="$sceneRef &lt; 0">
           <xsl:value-of select="@scenenumber" />
         </xsl:when>
-    
+
         <xsl:otherwise>
           <xsl:value-of select="$sceneRef"/>_<xsl:value-of select="@scenenumber" />
         </xsl:otherwise>
@@ -143,7 +143,7 @@
       <xsl:attribute name="id">
         <xsl:text>goal</xsl:text><xsl:value-of select="$goalId"/>
       </xsl:attribute>
-      <pre> 
+      <pre>
         <span>
         </span>
       </pre>
@@ -162,17 +162,17 @@
       <xsl:value-of select="substring-before($string, $from)"/>
       <xsl:value-of select="$to"/>
       <xsl:call-template name="replace">
-        <xsl:with-param name="string" 
+        <xsl:with-param name="string"
                         select="substring-after($string, $from)"/>
         <xsl:with-param name="from" select="$from"/>
         <xsl:with-param name="to" select="$to"/>
       </xsl:call-template>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:value-of select="$string"/> 
+      <xsl:value-of select="$string"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
-            
+
 
 </xsl:stylesheet>

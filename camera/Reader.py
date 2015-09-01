@@ -12,7 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Proof Camera.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -23,35 +23,35 @@ class Reader:
     self.line = ""
 
   def getLine(self):
-    """ Sets the line field to the next line in the script. 
+    """ Sets the line field to the next line in the script.
         Returns the line. """
     if self.line == "":
       self.line = self.getNextLine()
 
     return self.line
-  
-  def getNextLine(self):  
+
+  def getNextLine(self):
     """ Get the next line in the script. """
     newLine = self.script.find("\n") if self.script else -1
     if newLine >= 0:
       result = self.script[0:newLine + 1]
       self.script =  self.script[newLine + 1 :]
-      
+
     else:
       result = self.script
-      self.script = "" 
-    return result  
-    
+      self.script = ""
+    return result
+
   def readChar(self):
     """ Read the next character in the script, updating the position. """
     line = self.getLine()
     if len(line) == 0:
       return None
-    
+
     char = line[0]
     self.line = self.line[1:]
     return char
-  
+
   def peekChar(self):
     """ Read the next character in the script, not updating the position. """
     line = self.getLine()
@@ -59,11 +59,11 @@ class Reader:
       return line[0]
     else:
       return ' '
-  
+
   def add_code(self, code):
     """ Add the given code to the managed script. """
     self.script += code
 
-      
+
 
 

@@ -27,23 +27,23 @@ class Test_Reader(unittest.TestCase):
     expected = [command]
     actual = self.reader.parse(command)
     self.assertEquals(actual, expected)
-  
+
   def test_parse_two(self):
-    """ More than one command should create a list of more than one command. 
+    """ More than one command should create a list of more than one command.
     """
     command = "Goal forall x, x->x. Proof. intros."
     actual = self.reader.parse(command)
     self.assertTrue(len(actual) == 3)
-    
+
   def test_parse_continue(self):
     """ Adding new stuff to the parser should work. """
     command1 = "Goal forall x,\n"
     command2 = "x->x."
-    
+
     actual = self.reader.parse(command1)
-    
+
     self.assertEquals(actual, [command1])
-    
+
     actual = self.reader.parse(command2)
     self.assertEquals(actual, [command1 + command2])
 

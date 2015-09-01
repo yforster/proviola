@@ -12,7 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Proof Camera.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -28,7 +28,7 @@ class ResultHandler(HTMLParser):
     # Initialize the parent class
     HTMLParser.__init__(self)
     # The tag we are handling.
-    self.handlingTag = "" 
+    self.handlingTag = ""
 
     # A dictionary of variable, value assignments in the JavaScript of the
     # page
@@ -45,9 +45,9 @@ class ResultHandler(HTMLParser):
       exp = re.compile( r"\b\w*=\"\w*\"" )
 
       result = exp.findall(data)
-      
+
       if result:
         for item in result:
           assignment = item.split("=")
           self.assignments[assignment[0]] = assignment[1]
-    
+

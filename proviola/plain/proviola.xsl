@@ -11,7 +11,7 @@
 
   <script type = "text/javascript">
     var responses = new Array();
-    
+
     function mouseover(id) {
       response = get_response(id);
       set_response(response);
@@ -22,8 +22,8 @@
           <xsl:variable name="data">
             <xsl:call-template name="replace">
               <xsl:with-param name="string">
-                <xsl:value-of 
-                  select="translate(response, '&#x0A;', '&#x09;') "/> 
+                <xsl:value-of
+                  select="translate(response, '&#x0A;', '&#x09;') "/>
               </xsl:with-param>
               <xsl:with-param name="from">&quot;</xsl:with-param>
               <xsl:with-param name="to">\"</xsl:with-param>
@@ -39,7 +39,7 @@
     function get_response(id) {
       return responses[id];
     };
-  
+
     function set_response(response) {
       goalSpan =  document.getElementById("goal").getElementsByTagName("span")[0];
       goalSpan.innerHTML = response.replace(/&#x09;/g, '\n');
@@ -82,7 +82,7 @@
       <xsl:value-of select="substring-before($string, $from)"/>
         <xsl:value-of select="$to"/>
       <xsl:call-template name="replace">
-        <xsl:with-param name="string" 
+        <xsl:with-param name="string"
                         select="substring-after($string, $from)"/>
         <xsl:with-param name="from" select="$from"/>
         <xsl:with-param name="to" select="$to"/>
