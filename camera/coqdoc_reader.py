@@ -97,9 +97,8 @@ class Coqdoc_Reader(CoqReader):
       commands = self._find_commands(child)
       if commands and self.isCommand(commands[0]):
         command = self._replace_html(commands[0])
-        response = self._prover.send(
-                             command.encode(self._coqdoc_tree.originalEncoding))
-
+        if (command.count("Notation") == 0):
+           response = self._prover.send(command.encode(self._coqdoc_tree.originalEncoding))
         frame = Coqdoc_Frame(command = command, command_cd = coqdoc,
                            response = response)
         frames.append(frame)
